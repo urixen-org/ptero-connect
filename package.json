@@ -1,0 +1,11 @@
+{
+  "name": "@urixen/ptero-connect",
+  "version": "0.1.0",
+  "description": "The only package you need for Pterodactyl API management.",
+  "main": "index.ts",
+  "type": "module",
+  "repository": "https://github.com/urixen-org/ptero-connect",
+  "author": "SAMIR <158018273+xerinv0@users.noreply.github.com>",
+  "license": "MIT",
+  "private": false
+}
