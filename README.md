@@ -3,6 +3,7 @@
 [![yarn](https://img.shields.io/badge/yarn-add-blue?logo=yarn&logoColor=white)](https://yarnpkg.com/package/@urixen/ptero-connect)
 [![pnpm](https://img.shields.io/badge/pnpm-add-orange?logo=pnpm&logoColor=white)](https://pnpm.io)
 [![bun](https://img.shields.io/badge/bun-supported-ffcc33?logo=bun&logoColor=white)](https://bun.sh/)
+[![bun](https://img.shields.io/badge/deno-supported-ffcc33?logo=deno&logoColor=white)](https://deno.land/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-4.9-blue?logo=typescript&logoColor=blue)](https://www.typescriptlang.org/)
 [![downloads](https://img.shields.io/npm/dt/@urixen/ptero-connect?color=brightgreen)](https://www.npmjs.com/package/@urixen/ptero-connect)
 
