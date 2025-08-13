@@ -1,4 +1,10 @@
 # 🪶 ptero-connect
+[![npm version](https://img.shields.io/npm/v/@urixen/ptero-connect?color=blue&label=npm)](https://www.npmjs.com/package/@urixen/ptero-connect)
+[![yarn](https://img.shields.io/badge/yarn-add-blue?logo=yarn&logoColor=white)](https://yarnpkg.com/package/@urixen/ptero-connect)
+[![pnpm](https://img.shields.io/badge/pnpm-add-orange?logo=pnpm&logoColor=white)](https://pnpm.io)
+[![bun](https://img.shields.io/badge/bun-supported-ffcc33?logo=bun&logoColor=white)](https://bun.sh/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-4.9-blue?logo=typescript&logoColor=blue)](https://www.typescriptlang.org/)
+[![downloads](https://img.shields.io/npm/dt/@urixen/ptero-connect?color=brightgreen)](https://www.npmjs.com/package/@urixen/ptero-connect)
 
 **ptero-connect** is a lightweight Node.js/TypeScript library for interacting with the [Pterodactyl Application API](https://pterodactyl.io/).  
 It provides a clean, developer-friendly interface with **zero dependencies** and full TypeScript support.
