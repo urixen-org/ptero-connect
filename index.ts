@@ -359,6 +359,9 @@ export interface Egg {
   };
 }
 
+/**
+ * @includeExample ./examples/ApplicationApi.example.ts
+ */
 export class ApplicationApi {
   private panelUrl: string;
   private apiKey: string;
@@ -403,6 +406,7 @@ export class ApplicationApi {
 
   /**
    * Get all users from panel
+   * @includeExample ./examples/getAllUser.example.ts
    */
   async getAllUser(): Promise<UserData[]> {
     const data = await this.fetchJson<ApiResponse<UserData>>(
@@ -415,6 +419,7 @@ export class ApplicationApi {
   /**
    * Get a user by email
    * @param email User's email
+   * @includeExample ./examples/getUserByEmail.example.ts
    */
   async getAUserByEmail(email: string): Promise<UserData> {
     const data = await this.fetchJson<ApiResponse<UserData>>(
