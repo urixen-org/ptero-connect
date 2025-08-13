@@ -1161,6 +1161,10 @@ export class ApplicationApi {
     };
     return data as LocationWithNode;
   }
+  /**
+   * get all nests
+   * @param options - additional options
+   */
   async getAllNests(options = {}) {
     const params = new URLSearchParams(options);
     const response = await fetch(
@@ -1179,6 +1183,12 @@ export class ApplicationApi {
     return data as Nest[];
   }
 
+  /**
+   * get a nest
+   * 
+   * @param nestId - nest id
+   */
+
   async getANest(nestId: number) {
     const response = await fetch(
       `${this.panelUrl}/api/application/nests/${nestId}`,
@@ -1195,6 +1205,11 @@ export class ApplicationApi {
 
     return data as Nest;
   }
+  /**
+   * get all eggs
+   * 
+   * @param nestId - nest id
+   */
   async getAllEggs(nestId: number) {
     const response = await fetch(
       `${this.panelUrl}/api/application/nests/${nestId}/eggs`,
@@ -1211,7 +1226,13 @@ export class ApplicationApi {
 
     return data as Egg[];
   }
-  async getAEggs(nestId: number, eggId: number) {
+  /**
+   * get a egg
+   * 
+   * @param nestId - nest id
+   * @param eggId - egg id
+   */
+  async getAEgg(nestId: number, eggId: number) {
     const response = await fetch(
       `${this.panelUrl}/api/application/nests/${nestId}/eggs/${eggId}`,
       {
@@ -1234,6 +1255,12 @@ export class ApplicationApi {
     throw new Error("Small Utility not loaded");
   }
 }
+
+/**
+ * loads all small utilities available 
+ * getEggById
+ * getNodesByLocationId
+ */
 
 export function smallUtility() {
   /**

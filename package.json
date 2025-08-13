@@ -10,7 +10,10 @@
   },
   "author": "SAMIR <158018273+xerinv0@users.noreply.github.com>",
   "license": "MIT",
-  "devDependencies": {},
+  "devDependencies": {
+    "typedoc": "^0.28.10",
+    "typedoc-plugin-include-example": "2.1.2"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
