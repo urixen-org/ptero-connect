@@ -40,33 +40,39 @@ jobs:
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
-          const pkg = JSON.parse(require('fs').readFileSync('package.json', 'utf8'));
-          const fetch = globalThis.fetch;
-
-          // Get weekly download count
-          const downloadsRes = await fetch(`https://api.npmjs.org/downloads/point/last-week/${pkg.name}`);
+         node -e "
+         const fs = require('fs');
+         const fetch = globalThis.fetch;
+    
+         async function main() {
+         const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+          const downloadsRes = await fetch(\`https://api.npmjs.org/downloads/point/last-week/\${pkg.name}\`);
           const downloadsData = await downloadsRes.json();
           const weeklyDownloads = downloadsData.downloads ?? 0;
 
           const embed = {
-            title: `📦 ${pkg.name} updated to ${pkg.version}`,
-            url: `https://www.npmjs.com/package/${pkg.name}`,
-            description: pkg.description || "No description provided.",
-            thumbnail: { url: "https://avatars.githubusercontent.com/u/206305657?s=200&v=4" },
-            fields: [
-              { name: "Author", value: pkg.author || "Unknown", inline: true },
-              { name: "Weekly Downloads", value: weeklyDownloads.toString(), inline: true }
-            ],
-            color: 0x00ff99,
-            timestamp: new Date().toISOString(),
-            footer: {
-              text: "Powered by Urixen",
-              icon_url: "https://avatars.githubusercontent.com/u/206305657?s=200&v=4"
-            }
-          };
+          title: \`📦 \${pkg.name} updated to \${pkg.version}\`,
+           url: \`https://www.npmjs.com/package/\${pkg.name}\`,
+           description: pkg.description || 'No description provided.',
+           thumbnail: { url: 'https://avatars.githubusercontent.com/u/206305657?s=200&v=4' },
+           fields: [
+            { name: 'Author', value: pkg.author || 'Unknown', inline: true },
+            { name: 'Weekly Downloads', value: weeklyDownloads.toString(), inline: true }
+          ],
+          color: 0x00ff99,
+          timestamp: new Date().toISOString(),
+           footer: {
+            text: 'Powered by Urixen',
+            icon_url: 'https://avatars.githubusercontent.com/u/206305657?s=200&v=4'
+          }
+         };
 
-          await fetch(process.env.DISCORD_WEBHOOK, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ embeds: [embed] })
-          });
+      await fetch(process.env.DISCORD_WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ embeds: [embed] })
+      });
+    }
+
+    main();
+    ".  
