@@ -1,4 +1,3 @@
-
 name: Generate TypeDoc Docs
 
 on:
@@ -16,19 +15,18 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: 20
-          cache: npm
+          bun-version: latest
 
-      - name: Install TypeDoc, theme, and plugins
+      - name: Install TypeDoc, theme, and plugin
         run: |
-          npm install typedoc typedoc-github-theme typedoc-plugin-include-example
+          bun add typedoc typedoc-github-theme typedoc-plugin-include-example
 
       - name: Generate documentation
         run: |
-          npx typedoc \
+          bunx typedoc \
             --theme typedoc-github-theme \
             --plugin typedoc-plugin-include-example \
             --footer "MIT license © Urixen 2025" \
