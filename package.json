@@ -1,6 +1,6 @@
 {
   "name": "@urixen/ptero-connect",
-  "version": "0.1.1",
+  "version": "0.1.1.0",
   "description": "The only package you need for Pterodactyl API management.",
   "main": "index.ts",
   "type": "module",
@@ -21,5 +21,5 @@
   "bugs": {
     "url": "https://github.com/urixen-org/ptero-connect/issues"
   },
-  "homepage": "https://github.com/urixen-org/ptero-connect#readme"
+  "homepage": "https://urixen-org.github.io/ptero-connect/"
 }
