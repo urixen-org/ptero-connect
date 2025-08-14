@@ -1,6 +1,3 @@
-# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
-# For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
-
 name: NPM publish
 
 on:
@@ -29,4 +26,47 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+          NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
+
+  discord-notif:
+    needs: publish-npm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Notify Discord
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          const pkg = JSON.parse(require('fs').readFileSync('package.json', 'utf8'));
+          const fetch = globalThis.fetch;
+
+          // Get weekly download count
+          const downloadsRes = await fetch(`https://api.npmjs.org/downloads/point/last-week/${pkg.name}`);
+          const downloadsData = await downloadsRes.json();
+          const weeklyDownloads = downloadsData.downloads ?? 0;
+
+          const embed = {
+            title: `📦 ${pkg.name} updated to ${pkg.version}`,
+            url: `https://www.npmjs.com/package/${pkg.name}`,
+            description: pkg.description || "No description provided.",
+            thumbnail: { url: "https://avatars.githubusercontent.com/u/206305657?s=200&v=4" },
+            fields: [
+              { name: "Author", value: pkg.author || "Unknown", inline: true },
+              { name: "Weekly Downloads", value: weeklyDownloads.toString(), inline: true }
+            ],
+            color: 0x00ff99,
+            timestamp: new Date().toISOString(),
+            footer: {
+              text: "Powered by Urixen",
+              icon_url: "https://avatars.githubusercontent.com/u/206305657?s=200&v=4"
+            }
+          };
+
+          await fetch(process.env.DISCORD_WEBHOOK, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ embeds: [embed] })
+          });
