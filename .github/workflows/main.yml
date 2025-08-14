@@ -29,7 +29,7 @@ jobs:
           bunx typedoc \
             --theme typedoc-github-theme \
             --plugin typedoc-plugin-include-example \
-            --footer "MIT license © Urixen 2025" \
+            --customFooterHtml "MIT license © Urixen 2025" \
             --hideGenerator \
             --out docs
 
