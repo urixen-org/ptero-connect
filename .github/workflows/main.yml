@@ -27,7 +27,7 @@ jobs:
       - name: Generate documentation
         run: |
           bunx typedoc \
-            --theme typedoc-github-theme \
+            --plugin typedoc-github-theme \
             --plugin typedoc-plugin-include-example \
             --customFooterHtml "MIT license © Urixen 2025" \
             --hideGenerator \
