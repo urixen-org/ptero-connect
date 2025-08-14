@@ -1,0 +1,44 @@
+
+name: Generate TypeDoc Docs
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install TypeDoc, theme, and plugins
+        run: |
+          npm install typedoc typedoc-github-theme typedoc-plugin-include-example
+
+      - name: Generate documentation
+        run: |
+          npx typedoc \
+            --theme typedoc-github-theme \
+            --plugin typedoc-plugin-include-example \
+            --footer "MIT license © Urixen 2025" \
+            --hideGenerator \
+            --out docs
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          publish_branch: gh-pages
+          force_orphan: true
