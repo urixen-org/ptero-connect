@@ -52,6 +52,8 @@ const servers = await app.getAllServers();
 console.log(servers);
 ```
 
+### [Learn More](https://urixen-org.github.io/ptero-connect)
+
 ---
 
 ## 📄 License
