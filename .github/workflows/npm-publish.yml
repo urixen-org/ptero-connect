@@ -29,8 +29,9 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.npm_token }}
 
   discord-notif:
-    
+    #needs: publish-npm
     runs-on: ubuntu-latest
+    if: always()
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -40,39 +41,4 @@ jobs:
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
-         node -e "
-         const fs = require('fs');
-         const fetch = globalThis.fetch;
-    
-         async function main() {
-         const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-          const downloadsRes = await fetch(\`https://api.npmjs.org/downloads/point/last-week/\${pkg.name}\`);
-          const downloadsData = await downloadsRes.json();
-          const weeklyDownloads = downloadsData.downloads ?? 0;
-
-          const embed = {
-          title: \`📦 \${pkg.name} updated to \${pkg.version}\`,
-           url: \`https://www.npmjs.com/package/\${pkg.name}\`,
-           description: pkg.description || 'No description provided.',
-           thumbnail: { url: 'https://avatars.githubusercontent.com/u/206305657?s=200&v=4' },
-           fields: [
-            { name: 'Author', value: pkg.author || 'Unknown', inline: true },
-            { name: 'Weekly Downloads', value: weeklyDownloads.toString(), inline: true }
-          ],
-          color: 0x00ff99,
-          timestamp: new Date().toISOString(),
-           footer: {
-            text: 'Powered by Urixen',
-            icon_url: 'https://avatars.githubusercontent.com/u/206305657?s=200&v=4'
-          }
-         };
-
-      await fetch(process.env.DISCORD_WEBHOOK, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ embeds: [embed] })
-      });
-    }
-
-    main();
-    ".  
+          node -e "const fs=require('fs');const fetch=globalThis.fetch;async function main(){const pkg=JSON.parse(fs.readFileSync('package.json','utf8'));let weeklyDownloads=0;try{const res=await fetch(\`https://api.npmjs.org/downloads/point/last-week/\${pkg.name}\`);const data=await res.json();weeklyDownloads=data.downloads??0;}catch(e){console.error('Failed downloads',e);}const embed={title:\`📦 \${pkg.name} updated to \${pkg.version}\`,url:\`https://www.npmjs.com/package/\${pkg.name}\`,description:pkg.description||'No description provided.',thumbnail:{url:'https://avatars.githubusercontent.com/u/206305657?s=200&v=4'},fields:[{name:'Author',value:pkg.author||'Unknown',inline:true},{name:'Weekly Downloads',value:weeklyDownloads.toString(),inline:true}],color:0x00ff99,timestamp:new Date().toISOString(),footer:{text:'Powered by Urixen',icon_url:'https://avatars.githubusercontent.com/u/206305657?s=200&v=4'}};try{await fetch(process.env.DISCORD_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({embeds:[embed]})});}catch(e){console.error('Failed to send Discord',e);}}main();"
