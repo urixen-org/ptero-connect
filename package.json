@@ -1,6 +1,6 @@
 {
   "name": "@urixen/ptero-connect",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "The only package you need for Pterodactyl API management.",
   "main": "index.ts",
   "type": "module",
@@ -16,7 +16,7 @@
     "typedoc-plugin-include-example": "2.1.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\""
   },
   "bugs": {
     "url": "https://github.com/urixen-org/ptero-connect/issues"
