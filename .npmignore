@@ -2,3 +2,4 @@ docs
 .github
 node_modules
 *.example.ts
+examples

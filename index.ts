@@ -1,3 +1,7 @@
+/**
+ * @ignore
+ */
+
 export interface ApplicationApiOptions {
   panelUrl: string;
   apiKey: string;
@@ -436,6 +440,7 @@ export class ApplicationApi {
   /**
    * Get a user by username
    * @param username User's username
+   * @includeExample ./examples/getAUserByUsername.example.ts
    */
   async getAUserByUsername(username: string): Promise<UserData> {
     const data = await this.fetchJson<ApiResponse<UserData>>(
@@ -452,6 +457,7 @@ export class ApplicationApi {
   /**
    * Get a user by ID
    * @param id User's ID
+   * @includeExample ./examples/getAUserById.example.ts
    */
   async getAUserById(id: number): Promise<UserData> {
     const data = await this.fetchJson<SingleApiResponse<UserData>>(
@@ -464,8 +470,9 @@ export class ApplicationApi {
   /**
    * Create a new user
    * @param user User creation data
+   * @includeExample ./examples/createAUser.example.ts
    */
-  async createAUser(user: UserDataCreation): Promise<UserData> {
+  async createUser(user: UserDataCreation): Promise<UserData> {
     const data = await this.fetchJson<SingleApiResponse<UserData>>(
       `${this.panelUrl}/api/application/users`,
       {
@@ -481,6 +488,7 @@ export class ApplicationApi {
    * Update a user
    * @param id User ID
    * @param updates Fields to update
+   * @includeExample ./examples/updateUser.example.ts
    */
   async updateUser(
     id: number,
@@ -500,6 +508,7 @@ export class ApplicationApi {
   /**
    * Delete a user by ID
    * @param id User ID
+   * @includeExample ./examples/deleteUser.example.ts
    */
   async deleteUser(id: number): Promise<Boolean> {
     const response = await fetch(
