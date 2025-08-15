@@ -39,15 +39,17 @@ jobs:
 
       - name: Install TypeDoc, theme, and plugin
         run: |
-          bun add typedoc typedoc-github-theme typedoc-plugin-include-example
+          bun add typedoc typedoc-github-theme typedoc-plugin-include-example typedoc-plugin-extras
 
       - name: Generate documentation
         run: |
           bunx typedoc \
             --plugin typedoc-github-theme \
+            --plugin typedoc-plugin-extras \
             --plugin typedoc-plugin-include-example \
             --customFooterHtml "MIT license © Urixen 2025" \
             --hideGenerator \
+            --footerLastModified \
             --out docs
 
       - name: Upload docs artifact
