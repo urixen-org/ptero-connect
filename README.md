@@ -57,7 +57,7 @@ console.log(servers);
 ---
 
 ## 📄 License
-MIT License © 2025 [Urixen](https://github.com/urixen-org) and [Nehxurai](https://github.com/xerinv0)
+MIT License © 2025 [Urixen](https://github.com/urixen-org) and [Nehxurai](https://github.com/xerinv0) & [Vspcoderz](https://github.com/vspcoderz)
 
 ---
 
