@@ -2,6 +2,12 @@
  * @ignore
  */
 
+/**
+ *
+ * Application API Section
+ *
+ */
+
 export interface ApplicationApiOptions {
   panelUrl: string;
   apiKey: string;
@@ -726,9 +732,9 @@ export class ApplicationApi {
   }
   /**
    * Updates server start up settings
-   * 
+   *
    * PATCH /api/application/servers/{id}/startup
-   * 
+   *
    * @param id - Server id
    * @param updatedData - updated server start up settings
    * @returns updated Server setting data
@@ -759,9 +765,9 @@ export class ApplicationApi {
   }
   /**
    * Reinstall the corresponding server
-   * 
+   *
    * POST /api/application/servers/{id}/reinstall
-   * 
+   *
    * @param id - Server Id
    * @return boolean
    */
@@ -777,9 +783,9 @@ export class ApplicationApi {
 
   /**
    * Delete a server
-   * 
+   *
    * DELETE /api/application/servers/{id}
-   * 
+   *
    * @param id - server id
    * @param force - force delete server (may damage wings)
    * @returns boolean
@@ -788,7 +794,7 @@ export class ApplicationApi {
     const res = await fetch(
       `${this.panelUrl}/api/application/servers/${id}?force=${force}`,
       {
-        method: "DELETE"
+        method: "DELETE",
       }
     );
     if (!res.ok) return false;
@@ -800,9 +806,9 @@ export class ApplicationApi {
 
   /**
    * get corresponding server databases
-   * 
+   *
    * GET /api/application/servers/{id}/databases
-   * 
+   *
    * @param id - server id
    * @return server databases
    */
@@ -824,12 +830,12 @@ export class ApplicationApi {
   }
   /**
    * get a server's database details
-   * 
+   *
    * GET /api/application/servers/{id}/databases/{dbId}
-   * 
+   *
    * @param id - server id
    * @param dbID - database id
-   * @returns database details 
+   * @returns database details
    */
   async getServerDB(id: number, dbID: number) {
     const url = `${this.panelUrl}/api/application/servers/${id}/databases/${dbID}`;
@@ -848,9 +854,9 @@ export class ApplicationApi {
   }
   /**
    * Create a new database
-   * 
+   *
    * POST /api/application/servers/{id}/databases
-   * 
+   *
    * @param id - server id
    * @param dataDB - database details
    * @returns database
@@ -881,9 +887,9 @@ export class ApplicationApi {
   }
   /**
    * update server database details
-   * 
+   *
    * PATCH /api/application/servers/{id}/databases/{dbID}
-   * 
+   *
    * @param id - server id
    * @param dbID - database id
    * @param dataDB - data to be updated
@@ -930,9 +936,9 @@ export class ApplicationApi {
   }
   /**
    * delete a database from server
-   * 
+   *
    * DELETE /api/application/servers/{id}/databases/{dbID}
-   * 
+   *
    * @param id - server id
    * @param dbID - database id
    * @returns boolean
@@ -1199,7 +1205,7 @@ export class ApplicationApi {
 
   /**
    * get a nest
-   * 
+   *
    * @param nestId - nest id
    */
 
@@ -1221,7 +1227,7 @@ export class ApplicationApi {
   }
   /**
    * get all eggs
-   * 
+   *
    * @param nestId - nest id
    */
   async getAllEggs(nestId: number) {
@@ -1242,7 +1248,7 @@ export class ApplicationApi {
   }
   /**
    * get a egg
-   * 
+   *
    * @param nestId - nest id
    * @param eggId - egg id
    */
@@ -1271,7 +1277,13 @@ export class ApplicationApi {
 }
 
 /**
- * loads all small utilities available 
+ *
+ *  CLIENT API SECTION
+ *
+ */
+
+/**
+ * loads all small utilities available
  * getEggById
  * getNodesByLocationId
  */
@@ -1312,25 +1324,1017 @@ export function smallUtility() {
       throw new Error("Failed to locate egg configuration");
     }
   };
-  
+
   /**
    * fetch all nodes in a location by location id
-   * 
+   *
    * @param locationId - location id
    */
-   // @ts-ignore
-   ApplicationApi.prototype.getNodesByLocationId = async function(locationId: number) {
-    const api = this
+  // @ts-ignore
+  ApplicationApi.prototype.getNodesByLocationId = async function (
+    locationId: number
+  ) {
+    const api = this;
     try {
-      let nodes = []
-      const response = await api.getAllNodes()
+      let nodes = [];
+      const response = await api.getAllNodes();
       response.forEach((node) => {
-        if(node.attributes.location_id === locationId) {
-          nodes.push(node)
+        if (node.attributes.location_id === locationId) {
+          nodes.push(node);
         }
-      })
-    } catch(error) {
-      throw new Error(`something went wrong: ${error}`)
+      });
+    } catch (error) {
+      throw new Error(`something went wrong: ${error}`);
     }
-   }
+  };
+}
+
+export type UserDetails = {
+  object: "user";
+  attributes: {
+    id: number;
+    admin: boolean;
+    username: string;
+    email: string;
+    first_name: string;
+    last_name: string;
+    language: string;
+  };
+};
+
+export type TwoFAQRcode = {
+  data: {
+    image_url_data: string;
+    secret: string;
+  };
+};
+
+export type EnableTwoFA = {
+  object: string;
+  attributes: {
+    tokens: string[];
+  };
+};
+
+export type DisableTwoFA = {
+  errors?: ErrorsType[];
+};
+
+export type ErrorsType = {
+  code: string;
+  status: string;
+  detail: string;
+};
+
+export type ListAPIKeys = {
+  object: string;
+  data: [
+    {
+      object: string;
+      attributes: {
+        identifier: string;
+        description: string;
+        allowed_ips: string[];
+        last_used_at: string;
+        created_at: string;
+      };
+    }
+  ];
+};
+
+export type CreatedAPIKey = {
+  object: string;
+  attributes: {
+    identifier: string;
+    description: string;
+    allowed_ips: string[];
+    last_used_at: string | null;
+    created_at: string;
+  };
+  meta: {
+    secret_token: string;
+  };
+};
+
+export type DatabaseList = {
+  object: "list";
+  data: {
+    object: "server_database";
+    attributes: {
+      id: string;
+      host: {
+        address: string;
+        port: number;
+      };
+      name: string;
+      username: string;
+      connections_from: string;
+      max_connections: number;
+    };
+  }[];
+};
+
+export type CreatedDatabase = {
+  object: "server_database";
+  attributes: {
+    id: string;
+    host: {
+      address: string;
+      port: number;
+    };
+    name: string;
+    username: string;
+    connections_from: string;
+    max_connections: number;
+    relationships: {
+      password: {
+        object: "database_password";
+        attributes: {
+          password: string;
+        };
+      };
+    };
+  };
+};
+
+export type GenratedPassDatabase = {
+  object: "server_database";
+  attributes: {
+    id: string;
+    host: {
+      address: string;
+      port: number;
+    };
+    name: string;
+    username: string;
+    connections_from: string;
+    max_connections: number;
+    relationships: {
+      password: {
+        object: "database_password";
+        attributes: {
+          password: string;
+        };
+      };
+    };
+  };
+};
+
+export type FilesList = {
+  object: "list";
+  data: {
+    object: "file_object";
+    attributes: {
+      name: string;
+      mode: string;
+      size: number;
+      is_file: boolean;
+      is_symlink: boolean;
+      is_editable: boolean;
+      mimetype: string;
+      created_at: string; // ISO 8601 date string
+      modified_at: string; // ISO 8601 date string
+    };
+  }[];
+};
+
+export type GenratedUploadURL = {
+  object: "signed_url";
+  attributes: {
+    url: string;
+  };
+};
+
+export type SchedulesList = {
+  object: "list";
+  data: {
+    object: "server_schedule";
+    attributes: {
+      id: number;
+      name: string;
+      cron: {
+        day_of_week: string;
+        day_of_month: string;
+        hour: string;
+        minute: string;
+      };
+      is_active: boolean;
+      is_processing: boolean;
+      last_run_at: string | null; // ISO 8601 datetime or null
+      next_run_at: string; // ISO 8601 datetime
+      created_at: string; // ISO 8601 datetime
+      updated_at: string; // ISO 8601 datetime
+      relationships: {
+        tasks: {
+          object: "list";
+          data: {
+            object: "schedule_task";
+            attributes: {
+              id: number;
+              sequence_id: number;
+              action: string;
+              payload: string;
+              time_offset: number;
+              is_queued: boolean;
+              created_at: string; // ISO 8601 datetime
+              updated_at: string; // ISO 8601 datetime
+            };
+          }[];
+        };
+      };
+    };
+  }[];
+};
+
+export type SchedulesDetails = {
+  object: "server_schedule";
+  attributes: {
+    id: number;
+    name: string;
+    cron: {
+      day_of_week: string;
+      day_of_month: string;
+      hour: string;
+      minute: string;
+    };
+    is_active: boolean;
+    is_processing: boolean;
+    last_run_at: string | null; // ISO 8601 datetime or null
+    next_run_at: string; // ISO 8601 datetime
+    created_at: string; // ISO 8601 datetime
+    updated_at: string; // ISO 8601 datetime
+    relationships: {
+      tasks: {
+        object: "list";
+        data: {
+          object: "schedule_task";
+          attributes: {
+            id: number;
+            sequence_id: number;
+            action: string;
+            payload: string;
+            time_offset: number;
+            is_queued: boolean;
+            created_at: string; // ISO 8601 datetime
+            updated_at: string; // ISO 8601 datetime
+          };
+        }[];
+      };
+    };
+  };
+};
+
+export type AllocationsList = {
+  object: "list";
+  data: {
+    object: "allocation";
+    attributes: {
+      id: number;
+      ip: string;
+      ip_alias: string | null;
+      port: number;
+      notes: string | null;
+      is_default: boolean;
+    };
+  }[];
+};
+
+export type AutoGenratedAllocation = {
+  object: "allocation";
+  attributes: {
+    id: number;
+    ip: string;
+    ip_alias: string | null;
+    port: number;
+    notes: string | null;
+    is_default: boolean;
+  };
+};
+
+export type ServerSubuser = {
+  object: "server_subuser";
+  attributes: {
+    uuid: string;
+    username: string;
+    email: string;
+    image: string;
+    "2fa_enabled": boolean;
+    created_at: string; // ISO 8601 timestamp
+    permissions: string[];
+  };
+};
+
+export type UsersList = {
+  object: "list";
+  data: ServerSubuser[];
+};
+
+export type Backup = {
+  object: "backup";
+  attributes: {
+    uuid: string;
+    name: string;
+    ignored_files: string[];
+    sha256_hash: string;
+    bytes: number;
+    created_at: string; // ISO 8601 datetime
+    completed_at: string; // ISO 8601 datetime
+  };
+};
+
+export type BackupsList = {
+  object: "list";
+  data: Backup[];
+  meta: {
+    pagination: {
+      total: number;
+      count: number;
+      per_page: number;
+      current_page: number;
+      total_pages: number;
+      links: Record<string, string>;
+    };
+  };
+};
+
+export type ServerDetails = {
+  object: "server";
+  attributes: {
+    server_owner: boolean;
+    identifier: string;
+    uuid: string;
+    name: string;
+    node: string;
+    sftp_details: {
+      ip: string;
+      port: number;
+    };
+    description: string;
+    limits: {
+      memory: number;
+      swap: number;
+      disk: number;
+      io: number;
+      cpu: number;
+    };
+    feature_limits: {
+      databases: number;
+      allocations: number;
+      backups: number;
+    };
+    is_suspended: boolean;
+    is_installing: boolean;
+    relationships: {
+      allocations: {
+        object: "list";
+        data: {
+          object: "allocation";
+          attributes: {
+            id: number;
+            ip: string;
+            ip_alias: string | null;
+            port: number;
+            notes: string | null;
+            is_default: boolean;
+          };
+        }[];
+      };
+    };
+  };
+  meta: {
+    is_server_owner: boolean;
+    user_permissions: string[];
+  };
+};
+
+
+
+// *  End Of Types
+
+/**
+ * Creates Client api
+ *
+ * @param panelUrl - Url of the panel
+ * @param clientKey - The key from account api
+ *
+ * @returns something
+ */
+export class ClientApi {
+  private panelUrl: string;
+  private clientKey: string;
+  private headers: Record<string, string>;
+  private debug: boolean;
+
+  constructor(
+    panelUrl: string,
+    clientKey: string,
+    extra: {
+      headers?: Record<string, string>;
+      debug?: boolean;
+    } = {}
+  ) {
+    this.panelUrl = removeTrailingSlash(panelUrl);
+    this.clientKey = clientKey;
+    this.debug = extra.debug ?? false;
+    this.headers = {
+      Accept: "application/json",
+      Authorization: `Bearer ${this.clientKey}`,
+      "Content-Type": "application/json",
+      ...extra.headers,
+    };
+  }
+
+  async api<T>(
+    url: string,
+    data?: object | string,
+    method?: string
+  ): Promise<T> {
+    let response: Response;
+    try {
+      const fetchOptions: RequestInit = {
+        headers: this.headers,
+        method: method ? method : data ? "POST" : "GET",
+        body: data
+          ? typeof data === "string"
+            ? data
+            : JSON.stringify(data)
+          : undefined,
+      };
+
+      if (this.debug) {
+        console.time("request_time");
+        console.log(`[Req] [${url}]: ${JSON.stringify(fetchOptions)}`);
+      }
+
+      response = await fetch(this.panelUrl + url, fetchOptions);
+
+      if (this.debug) {
+        console.timeEnd("request_time");
+      }
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        switch (response.status) {
+          case 400:
+            throw new Error(`Request validation failed: ${errorText}`);
+          case 401:
+            throw new Error("Invalid credentials");
+          case 403:
+            throw new Error(`Insufficient permission: ${errorText}`);
+          case 422:
+            throw new Error(`Invalid request data: ${errorText}`);
+          default:
+            throw new Error(
+              `API Error: ${response.status} ${response.statusText} - ${errorText}`
+            );
+        }
+      }
+
+      if (response.headers.get("Content-Type")?.includes("application/json")) {
+        const jsonResponse = await response.json();
+        if (this.debug) console.log(`[Res] [${url}]:`, jsonResponse);
+        return jsonResponse as T;
+      } else {
+        const textResponse = await response.text();
+        if (this.debug) console.log(`[Res] [${url}]:`, textResponse);
+        return textResponse as T;
+      }
+    } catch (error) {
+      if (this.debug) console.error(`[Error] [${url}]:`, error);
+      throw error;
+    }
+  }
+
+  /**
+   *
+   *
+   * *  "api/account" API Routes
+   *
+   *
+   */
+
+  async getUserDetails(): Promise<UserDetails> {
+    return this.api<UserDetails>("/api/client/account");
+  }
+
+  async getTwoFAQRCode(): Promise<TwoFAQRcode> {
+    return this.api<TwoFAQRcode>("/api/client/account/two-factor");
+  }
+
+  async enableTwoFA(code: number): Promise<EnableTwoFA> {
+    return this.api<EnableTwoFA>(
+      "/account/two-factor",
+      { code: String(code) },
+      "POST"
+    );
+  }
+
+  async disableTwoFA(pass: string): Promise<DisableTwoFA> {
+    return this.api<DisableTwoFA>(
+      "/account/two-factor",
+      { password: pass },
+      "DELETE"
+    );
+  }
+
+  async updateEmail(newEmail: string, password: string) {
+    return this.api(
+      "/api/client/account/email",
+      { email: newEmail, password: password },
+      "PUT"
+    );
+  }
+
+  async updatePassword(currentPassword: string, newPassword: string) {
+    return this.api(
+      "/api/client/account/password",
+      {
+        current_password: currentPassword,
+        password: newPassword,
+        password_confirmation: newPassword,
+      },
+      "PUT"
+    );
+  }
+
+  async listAPIKeys(): Promise<ListAPIKeys> {
+    return this.api<ListAPIKeys>("/api/client/account/api-keys");
+  }
+
+  async createAPIKey(desc: string, allowIP: string[]): Promise<CreatedAPIKey> {
+    return this.api<CreatedAPIKey>(
+      "api/client/account/api-keys",
+      {
+        description: desc,
+        allowed_ips: allowIP,
+      },
+      "POST"
+    );
+  }
+
+  async deleteAPIKey(identifier: string) {
+    return this.api(`/api/client/account/api-keys/${identifier}`, {}, "DELETE");
+  }
+
+  /**
+   *
+   *
+   * *  "/api/server/{serverId}" Routes
+   *
+   */
+
+
+  async getServerDetails (srvID : string) : Promise<ServerDetails> {
+    return this.api<ServerDetails>(`/api/client/servers/${srvID}`)
+
+  }
+
+  async listDatabases(srvID: string, dbPass?: string): Promise<DatabaseList> {
+    return this.api<DatabaseList>(
+      `/api/client/servers/${srvID}/databases${
+        dbPass ? `?password=${dbPass}` : ""
+      }`
+    );
+  }
+
+  async createDatabase(
+    srvID: string,
+    db: string,
+    remote: string
+  ): Promise<CreatedDatabase> {
+    return this.api<CreatedDatabase>(
+      `/api/client/servers/${srvID}/databases`,
+      {
+        database: db,
+        remote: remote,
+      },
+      "POST"
+    );
+  }
+  // Genrates Random password Of Given Database
+
+  async genDatabasePassword(
+    srvID: string,
+    dbID: string
+  ): Promise<GenratedPassDatabase> {
+    return this.api<GenratedPassDatabase>(
+      `/api/client/servers/${srvID}/databases/${dbID}/rotate-password`,
+      {},
+      "POST"
+    );
+  }
+
+  async deleteDatabase(srvID: string, dbID: string) {
+    return this.api(
+      `/api/client/servers/${srvID}/databases/${dbID}`,
+      {},
+      "DELETE"
+    );
+  }
+
+  async listFiles(srvID: string, dir?: string): Promise<FilesList> {
+    return this.api<FilesList>(
+      `/api/client/servers/${srvID}/files/list${
+        dir ? `?directory=${encodeURIComponent(dir)}` : ""
+      }`
+    );
+  }
+
+  async readFileContents(srvID: string, filePath: string) {
+    const encodedPath = encodeURIComponent(filePath);
+    return this.api(
+      `/api/client/servers/${srvID}/files/contents?file=${encodedPath}`
+    );
+  }
+
+  async downloadFile(srvID: string, filePath: string) {
+    const encodedPath = encodeURIComponent(filePath);
+    return this.api(
+      `/api/client/servers/${srvID}/files/download?file=${encodedPath}`
+    );
+  }
+
+  async renameFile(srvID: string, root: string, from: string, to: string) {
+    return this.api(
+      `/api/client/servers/${srvID}/files/rename`,
+      {
+        root: root,
+        files: [
+          {
+            from: from,
+            to: to,
+          },
+        ],
+      },
+      "PUT"
+    );
+  }
+
+  async CreateCopyFile(srvID: string, filePath: string) {
+    return this.api(
+      `/api/client/servers/${srvID}/files/copy`,
+      {
+        location: filePath,
+      },
+      "POST"
+    );
+  }
+
+  async WriteFile(srvID: string, filePath: string, data: string) {
+    return this.api(`/api/client/servers/${srvID}/files/write`, data, "POST");
+  }
+
+  async compressFile(srvID: string, root: string, files: string[]) {
+    return this.api(`/api/client/servers/${srvID}/files/compress`, {
+      root: root,
+      files: files,
+    });
+  }
+
+  async decompressFile(srvID: string, root: string, file: string) {
+    return this.api(`/api/client/servers/${srvID}/files/decompress`, {
+      root: root,
+      file: file,
+    });
+  }
+
+  async deleteFile(srvID: string, root: string, files: string[]) {
+    return this.api(`/api/client/servers/${srvID}/files/delete`, {
+      root: root,
+      files: files,
+    });
+  }
+
+  async createFolder(srvID: string, root: string, name: string) {
+    return this.api(`/api/client/servers/${srvID}/files/delete`, {
+      root: root,
+      name: name,
+    });
+
+    // ?   , /Upload Files Left
+  }
+
+  async genrateUploadURL(srvID: string): Promise<GenratedUploadURL> {
+    return this.api<GenratedUploadURL>(
+      `/api/client/servers/${srvID}/files/upload`
+    );
+  }
+
+  async listSchedules(srvID: string): Promise<SchedulesList> {
+    return this.api<SchedulesList>(
+      `/api/client/servers/${srvID}/files/schedules`
+    );
+  }
+
+  async createSchedules(
+    srvID: string,
+    name: string,
+    minute: string,
+    hour: string,
+    day_of_month: string,
+    day_of_week: string,
+    is_active?: boolean
+  ) {
+    const body: Record<string, any> = {
+      name,
+      minute,
+      hour,
+      day_of_month,
+      day_of_week,
+    };
+
+    if (typeof is_active !== "undefined") {
+      body.is_active = is_active;
+    }
+
+    return this.api(
+      `/api/client/servers/${srvID}/files/schedules`,
+      body,
+      "POST"
+    );
+  }
+
+  async getScheduleDetails(
+    srvID: string,
+    id: string
+  ): Promise<SchedulesDetails> {
+    return this.api<SchedulesDetails>(
+      `/api/client/servers/${srvID}/schedules/${id}`
+    );
+  }
+
+  async updateSchedules(
+    srvID: string,
+    scheduleID: string,
+    name: string,
+    minute: string,
+    hour: string,
+    day_of_month: string,
+    day_of_week: string,
+    is_active?: boolean
+  ) {
+    const body: Record<string, any> = {
+      name,
+      minute,
+      hour,
+      day_of_month,
+      day_of_week,
+    };
+
+    if (typeof is_active !== "undefined") {
+      body.is_active = is_active;
+    }
+
+    return this.api(
+      `/api/client/servers/${srvID}/files/schedules/${scheduleID}`,
+      body,
+      "POST"
+    );
+  }
+
+  async deleteSchedules(srvID: string, scheduleID: string) {
+    return this.api(
+      `/api/client/servers/${srvID}/schedules/${scheduleID}`,
+      {},
+      "DELETE"
+    );
+  }
+
+  async createTask(
+    srvID: string,
+    scheduleID: string,
+    action: "command" | "power" | "backup",
+    payload: string,
+    time_offset: string
+  ) {
+    return this.api(
+      `/api/client/servers/${srvID}/schedules/${scheduleID}/tasks`,
+      { action, payload, time_offset },
+      "POST"
+    );
+  }
+
+  async updateTask(
+    srvID: string,
+    scheduleID: string,
+    taskID: string,
+    action: "command" | "power" | "backup",
+    payload: string,
+    time_offset: string
+  ) {
+    return this.api(
+      `/api/client/servers/${srvID}/schedules/${scheduleID}/tasks/${taskID}`,
+      {
+        action,
+        payload,
+        time_offset,
+      },
+      "POST"
+    );
+  }
+
+  async deleteTask(srvID: string, scheduleID: string, taskID: string) {
+    return this.api(
+      `/api/client/servers/${srvID}/schedules/${scheduleID}/tasks/${taskID}`,
+      {},
+      "DELETE"
+    );
+  }
+
+  async listAllocations(srvID: string): Promise<AllocationsList> {
+    return this.api<AllocationsList>(
+      `/api/client/servers/${srvID}/network/allocations`
+    );
+  }
+
+  async assignAllocation(srvID: string): Promise<AutoGenratedAllocation> {
+    return this.api<AutoGenratedAllocation>(
+      `/api/client/servers/${srvID}/network/allocations`,
+      {},
+      "POST"
+    );
+  }
+
+  async setAllocationNote(srvID: string, allocationID: number, notes: string) {
+    return this.api(
+      `/api/client/servers/${srvID}/network/allocations/${allocationID}`,
+      { notes },
+      "POST"
+    );
+  }
+
+  async setPrimaryAllocation(srvID: string, allocationID: number) {
+    return this.api(
+      `/api/client/servers/${srvID}/network/allocations/${allocationID}/primary`,
+      {},
+      "POST"
+    );
+  }
+
+  async unassignAllocation(srvID: string, allocationID: number) {
+    return this.api(
+      `/api/client/servers/${srvID}/network/allocations/${allocationID}`,
+      {},
+      "DELETE"
+    );
+  }
+
+  async listUsers(srvID: string): Promise<UsersList> {
+    return this.api<UsersList>(`/api/client/servers/${srvID}/users`);
+  }
+
+  async createUser(srvID: string, email: string, permissions: string[]) {
+    return this.api(
+      `/api/client/servers/${srvID}/users`,
+      {
+        email,
+        permissions,
+      },
+      "POST"
+    );
+  }
+
+  async getSubUserDetails(srvID: string, subuserUUID: string) {
+    return this.api(`/api/client/servers/${srvID}/users/${subuserUUID}`);
+  }
+
+  async updateUser(srvID: string, subuserUUID: string, permissions: string[]) {
+    return this.api(
+      `/api/client/servers/${srvID}/users/${subuserUUID}`,
+      { permissions },
+      "POST"
+    );
+  }
+
+  async deleteUser(srvID: string, subuserUUID: string) {
+    return this.api(
+      `/api/client/servers/${srvID}/users/${subuserUUID}`,
+      {},
+      "DELETE"
+    );
+  }
+
+  async listBackups(srvID: string): Promise<BackupsList> {
+    return this.api<BackupsList>(`/api/client/servers/${srvID}/backups`);
+  }
+
+  async createBackup(srvID: string) {
+    return this.api(`/api/client/servers/${srvID}/backups`, {}, "POST");
+  }
+
+  async getBackupDetails(srvID: string, backupUUID: string) {
+    return this.api(`/api/client/servers/${srvID}/backups/${backupUUID}`);
+  }
+
+  async getBackupDownloadLink(srvID: string, backupUUID: string) {
+    return this.api(
+      `/api/client/servers/${srvID}/backups/${backupUUID}/download`
+    );
+  }
+
+  async deleteBackup(srvID: string, backupUUID: string) {
+    return this.api(
+      `/api/client/servers/${srvID}/backups/${backupUUID}`,
+      {},
+      "DELETE"
+    );
+  }
+
+  async listStartupVariables(srvID: string) {
+    return this.api(`/api/client/servers/${srvID}/startup`);
+  }
+
+  async updateStartupVariable(srvID: string, key: string, value: string) {
+    return this.api(
+      `/api/client/servers/${srvID}/startup/variable`,
+      {
+        key,
+        value,
+      },
+      "PUT"
+    );
+  }
+
+  async renameServer(srvID: string, newName: string) {
+    return this.api(
+      `/api/client/servers/${srvID}/settings/rename`,
+      { name: newName },
+      "POST"
+    );
+  }
+
+  async reinstallServer(srvID: string) {
+    return this.api(
+      `/api/client/servers/${srvID}/settings/reinstall`,
+      {},
+      "POST"
+    );
+  }
+
+  async listServers(queryParams?: { egg?: boolean; subusers?: boolean }) {
+    const query = new URLSearchParams();
+  
+    if (queryParams?.egg) {
+      query.append('egg', 'true');
+    }
+    if (queryParams?.subusers) {
+      query.append('subusers', 'true');
+    }
+  
+    const queryString = query.toString() ? `?${query.toString()}` : '';
+  
+    return this.api(
+      `/api/client${queryString}`
+    );
+  }
+  
+}
+
+
+interface WebSocketToken {
+  object: "websocket_token";
+  data: {
+    token: string;
+    socket: string;
+  };
+}
+
+export class WebsocketApi {
+  private clientApi: ClientApi;
+
+  constructor(clientApi: ClientApi) {
+    this.clientApi = clientApi;
+  }
+
+  async getToken(serverUUID: string): Promise<WebSocketToken> {
+    return this.clientApi.api(
+      `/api/client/servers/${serverUUID}/websocket`
+    ) as Promise<WebSocketToken>;
+  }
+
+  async connect(serverUUID: string): Promise<WebSocket> {
+    const token = await this.getToken(serverUUID);
+
+    // Pterodactyl requires the token as a query param
+    const wsUrl = `${token.data.socket}?token=${token.data.token}`;
+    const socket = new WebSocket(wsUrl);
+
+    socket.onopen = () => {
+      console.log("WebSocket connected");
+    };
+
+    socket.onmessage = (msg) => {
+      console.log("Received:", msg.data.toString());
+    };
+
+    socket.onclose = () => {
+      console.log("WebSocket closed");
+    };
+
+    socket.onerror = (err) => {
+      console.error("WebSocket error:", err);
+    };
+
+    return socket;
+  }
 }
