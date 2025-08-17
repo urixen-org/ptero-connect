@@ -2316,24 +2316,25 @@ export class WebsocketApi {
     const token = await this.getToken(serverUUID);
 
     // Pterodactyl requires the token as a query param
-    const wsUrl = `${token.data.socket}?token=${token.data.token}`;
+    const wsUrl = `${token.data.socket}` //?token=${token.data.token};
     const socket = new WebSocket(wsUrl);
 
-    socket.onopen = () => {
-      console.log("WebSocket connected");
-    };
-
-    socket.onmessage = (msg) => {
-      console.log("Received:", msg.data.toString());
-    };
-
-    socket.onclose = () => {
-      console.log("WebSocket closed");
-    };
-
-    socket.onerror = (err) => {
-      console.error("WebSocket error:", err);
-    };
+    socket.addEventListener('open', event => {
+      console.log('WebSocket connection established!');
+      socket.send(JSON.stringify({event:"auth",args:[`${token.data.token}`]}))
+    });
+    // Listen for messages and executes when a message is received from the server.
+    socket.addEventListener('message', event => {
+      console.log('Message from server: ', event.data);
+    });
+    // Executes when the connection is closed, providing the close code and reason.
+    socket.addEventListener('close', event => {
+      console.log('WebSocket connection closed:', event.code, event.reason);
+    }); // *  fuck raw ill install ws as a optional dependencie:skull: now i go to shower fuck websocket better to create remote api
+    // Executes if an error occurs during the WebSocket communication.
+    socket.addEventListener('error', error => {
+      console.error('WebSocket error:', error);
+    });
 
     return socket;
   }

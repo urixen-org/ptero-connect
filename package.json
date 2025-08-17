@@ -8,7 +8,11 @@
     "type": "git",
     "url": "git+https://github.com/urixen-org/ptero-connect.git"
   },
-  "author": "SAMIR <158018273+xerinv0@users.noreply.github.com>",
+  "authors": [
+    "SAMIR <158018273+xerinv0@users.noreply.github.com>",
+    "Vspcoderz <vedantpakwane90@gmail.com>"
+  ],
+  
   "license": "MIT",
   "devDependencies": {
     "typedoc": "^0.28.10",
