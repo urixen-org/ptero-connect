@@ -12,9 +12,10 @@
     "SAMIR <158018273+xerinv0@users.noreply.github.com>",
     "Vspcoderz <vedantpakwane90@gmail.com>"
   ],
-  
   "license": "MIT",
   "devDependencies": {
+    "@types/bun": "^1.2.20",
+    "@types/ws": "^8.18.1",
     "typedoc": "^0.28.10",
     "typedoc-github-theme": "^0.3.0",
     "typedoc-plugin-include-example": "2.1.2"
@@ -25,5 +26,13 @@
   "bugs": {
     "url": "https://github.com/urixen-org/ptero-connect/issues"
   },
-  "homepage": "https://urixen-org.github.io/ptero-connect/"
+  "homepage": "https://urixen-org.github.io/ptero-connect/",
+  "peerDependencies": {
+    "ws": "^8.18.3"
+  },
+  "peerDependenciesMeta": {
+    "ws": {
+      "optional": true
+    }
+  }
 }
