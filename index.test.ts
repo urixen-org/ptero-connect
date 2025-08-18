@@ -1,9 +1,8 @@
 import { ClientApi } from "./index.ts";
 import { expect, test } from "bun:test";
 
-const api = new ClientApi(
-  "https://paid.zypher.cloud",
-  "ptlc_a4yXElNUdhVb6irMqXBVNH4jgG2ixsoA8VMmdf0H3NZ",
+// @ts-ignore
+const api = new ClientApi(process.env.PanelUrl, process.env.PanelKey,
   { debug: false }
 );
 
@@ -16,8 +15,7 @@ const logo = `
 88        88  88    \`8b    88    ,8P  Y8,    88           88    \`8b 88  
 Y8a.    .a8P  88     \`8b   88   d8'    \`8b   88           88     \`8888  
  \`"Y8888Y"'   88      \`8b  88  8P        Y8  88888888888  88      \`888  
---------------------------------------------------------------------------
-                              Ptero-Connect
+----------------------------------------------------Ptero-Connect: Testing 
 `;
 
 console.log(logo);
@@ -91,6 +89,7 @@ test("rename server", async () => {
   const __ = await api.renameServer("a9049bb7", "fuck");
   expect(__);
 });
+
 test("get all servers", async () => {
   const __ = await api.listServers();
   expect(__).toEqual({
@@ -336,6 +335,7 @@ test("get server details ", async () => {
     },
   });
 });
+
 /*
 * no need of you reinstall 
 test("reinstall server", async () => {
