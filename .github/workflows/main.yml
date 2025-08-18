@@ -46,7 +46,6 @@ jobs:
             --plugin typedoc-plugin-extras \
             --plugin typedoc-plugin-include-example \
             --customFooterHtml "MIT license © Urixen 2025" \
-            --hideGenerator \
             --footerLastModified \
             --out docs
 
