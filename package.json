@@ -12,6 +12,17 @@
     "SAMIR <158018273+xerinv0@users.noreply.github.com>",
     "Vspcoderz <vedantpakwane90@gmail.com>"
   ],
+  "keywords": [
+    "Pterodactyl",
+    "API",
+    "undici",
+    "node-js",
+    "js",
+    "ptero-api",
+    "ptero",
+    "pterodactyl-api",
+    "API client"
+  ],
   "license": "MIT",
   "devDependencies": {
     "@types/bun": "^1.2.20",
