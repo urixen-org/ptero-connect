@@ -2,9 +2,9 @@ import { ClientApi } from "./index.ts";
 import { expect, test } from "bun:test";
 
 // @ts-ignore
-const api = new ClientApi(process.env.PanelUrl, process.env.PanelKey,
-  { debug: false }
-);
+const api = new ClientApi(process.env.PanelUrl, process.env.PanelKey, {
+  debug: false,
+});
 
 const logo = `
 88        88  88888888ba   88  8b        d8  88888888888  888b      88  
@@ -74,10 +74,10 @@ test("LIST == > API keys", async () => {
       {
         object: "api_key",
         attributes: {
-          identifier: "ptlc_a4yXElNUdhV",
-          description: "Fuck",
+          identifier: "ptlc_T4lOa1ZZJRd",
+          description: "Suckest",
           allowed_ips: [],
-          created_at: "2025-08-17T14:30:10+05:30",
+          created_at: "2025-08-18T07:10:58+05:30",
           last_used_at: iso,
         },
       },
@@ -86,7 +86,7 @@ test("LIST == > API keys", async () => {
 });
 
 test("rename server", async () => {
-  const __ = await api.renameServer("a9049bb7", "fuck");
+  const __ = await api.renameServer("a9049bb7", "test");
   expect(__);
 });
 
@@ -102,7 +102,7 @@ test("get all servers", async () => {
           identifier: "a9049bb7",
           internal_id: 8,
           uuid: "a9049bb7-034b-4fd8-b752-8903b9387a02",
-          name: "Test",
+          name: "test",
           node: "Budget Intel Xeon 1",
           node_alert: null,
           daemon_text: "[Pterodactyl Daemon]:",
@@ -225,7 +225,7 @@ test("get server details ", async () => {
       identifier: "a9049bb7",
       internal_id: 8,
       uuid: "a9049bb7-034b-4fd8-b752-8903b9387a02",
-      name: "Test",
+      name: "test",
       node: "Budget Intel Xeon 1",
       node_alert: null,
       daemon_text: "[Pterodactyl Daemon]:",
@@ -344,6 +344,7 @@ test("reinstall server", async () => {
 })
 */
 
-// ? bro try bun test
-// posted reinstall action 2 times :skull: ☠️
-// * check already  i Logo is superb can u tell mefont?? univers ok
+/* passed
+const list = await api.listFiles("a9049bb7")
+console.log(list.data[0])
+*/
