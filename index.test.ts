@@ -1,4 +1,4 @@
-import { ClientApi } from "./index.ts";
+import { ClientApi } from "./src/index.js";
 import { expect, test } from "bun:test";
 
 // @ts-ignore

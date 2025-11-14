@@ -1005,8 +1005,8 @@ export type ServersList = {
 export declare class PterodactylAPIError extends Error {
     status: number;
     statusText: string;
-    responseBody?: string | undefined;
-    constructor(message: string, status: number, statusText: string, responseBody?: string | undefined);
+    responseBody?: string;
+    constructor(message: string, status: number, statusText: string, responseBody?: string);
 }
 export declare class ValidationError extends PterodactylAPIError {
     constructor(message: string, responseBody?: string);
