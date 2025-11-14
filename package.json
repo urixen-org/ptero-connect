@@ -1,6 +1,6 @@
 {
   "name": "@urixen/ptero-connect",
-  "version": "0.2.1",
+  "version": "0.2.3-fixed",
   "description": "The only package you need for Pterodactyl API management.",
   "main": "dist/index.js",
   "type": "module",
